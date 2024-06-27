@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Gremlin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Gremlin.java</span></div><h1>Gremlin.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PImage;
+import java.util.*;
+
+/**
+* Class Gremlin extending Creature class, gremlins changes direction when colliding with
+* walls and shoot slimes on an interval.
+* Aside from shooting, gremlins respawn if killed and can be frozen by power up.
+ */
+public class Gremlin extends Creature {
+    private boolean start;
+    private boolean respawn;
+    private ArrayList&lt;String&gt; availableDirections;
+    // For shooting slimes.
+    private int slimeTimer;
+    private int slimeTimerTarget;
+    // For snowball powerup.
+    private boolean frozen;
+    private int frozenTimer;
+    private int frozenTimerTarget;
+
+    /**
+    * Gremlin constructor.
+    * Includes a start flag as choosing directions at the start is different.
+    * @param x x coordinate
+    * @param y y coordinate
+    * @param sprite sprite
+    * @param enemyCooldown interval for shooting slims */
+    public Gremlin(int x, int y, PImage sprite, double enemyCooldown) {
+<span class="fc" id="L31">        super(x, y, sprite);</span>
+<span class="fc" id="L32">        this.velocity = 1;</span>
+<span class="fc" id="L33">        this.start = true;</span>
+<span class="fc" id="L34">        this.respawn = false;</span>
+<span class="fc" id="L35">        this.availableDirections = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L37">        this.slimeTimer = 0;</span>
+<span class="fc" id="L38">        this.slimeTimerTarget = (int)(App.FPS * enemyCooldown);</span>
+
+<span class="fc" id="L40">        this.frozen = false;</span>
+<span class="fc" id="L41">        this.frozenTimer = 0;</span>
+<span class="fc" id="L42">        this.frozenTimerTarget = App.FPS * 10;</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+    * Handles logic for gremlins
+    * @param stonewallList list of stonewalls
+    * @param brickwallList list of brickwalls
+    * @param slimeList list of slimes
+    * @param freeTileList list of free tiles
+    * @param slimeSprite 
+    * @param wizardX wizard x coordinate
+    * @param wizardY wizard y coordinate
+     */
+    public void tick(
+        ArrayList&lt;Stonewall&gt; stonewallList, ArrayList&lt;Brickwall&gt; brickwallList,
+        ArrayList&lt;Slime&gt; slimeList, PImage slimeSprite, ArrayList&lt;FreeTile&gt; freeTileList,
+        int wizardX, int wizardY
+        ) {
+
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (this.start) {</span>
+            // Get available directions to move in.
+<span class="fc" id="L63">            this.availableDirections =</span>
+<span class="fc" id="L64">                this.getDirections(stonewallList, brickwallList, this.direction, this.start);</span>
+<span class="fc" id="L65">            int directionsNum = this.availableDirections.size();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (directionsNum == 0) {</span>
+<span class="fc" id="L67">                this.direction = &quot;none&quot;;</span>
+            } else {
+            // Choose random directions from array
+<span class="fc" id="L70">                Random randomizer = new Random();</span>
+<span class="fc" id="L71">                this.direction = this.availableDirections.get(randomizer.nextInt(directionsNum));</span>
+            }
+<span class="fc" id="L73">            this.start = false;</span>
+<span class="fc" id="L74">        } else {</span>
+            // If gremlin collided with a wall, get directions different than previously to move in.
+<span class="fc" id="L76">            boolean collidedStone = this.checkCollisionWall(stonewallList, this.direction);</span>
+<span class="fc" id="L77">            boolean collidedBrick = this.checkCollisionWall(brickwallList, this.direction);</span>
+<span class="pc bpc" id="L78" title="2 of 4 branches missed.">            this.collided = collidedStone || collidedBrick;</span>
+
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (this.collided) {</span>
+<span class="nc" id="L81">                this.availableDirections =</span>
+<span class="nc" id="L82">                    this.getDirections(stonewallList, brickwallList, this.direction, this.start);</span>
+<span class="nc" id="L83">                int directionsNum = this.availableDirections.size();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (directionsNum == 0) {</span>
+<span class="nc" id="L85">                    this.direction = &quot;none&quot;;</span>
+                } else {
+<span class="nc" id="L87">                    Random randomizer = new Random();</span>
+<span class="nc" id="L88">                    this.direction = this.availableDirections.get(randomizer.nextInt(directionsNum));</span>
+                }
+            }
+        }
+
+        // Respawn on a new tile at least 10 blocks away if shot.
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (this.respawn) {</span>
+<span class="nc" id="L95">            this.respawn(freeTileList, wizardX, wizardY);</span>
+        }
+
+        // Move and shoot if not frozen
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (!this.frozen) {</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            if (this.slimeTimer &lt; this.slimeTimerTarget) {</span>
+<span class="fc" id="L101">                this.slimeTimer++;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            } else if (this.slimeTimer == this.slimeTimerTarget) {</span>
+<span class="nc" id="L103">                this.shoot(slimeList, slimeSprite);</span>
+<span class="nc" id="L104">                this.slimeTimer++;</span>
+            } else {
+<span class="nc" id="L106">                this.slimeTimer = 0;</span>
+            }
+<span class="fc" id="L108">            this.move();</span>
+        } else {
+            // Runs down frozen timer.
+<span class="nc" id="L111">            this.frozenTimer++;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (this.frozenTimer == this.frozenTimerTarget) {</span>
+<span class="nc" id="L113">                this.unfreeze();</span>
+            }
+        }
+<span class="fc" id="L116">    }</span>
+
+    /**
+    * Shoot slimes
+    * @param slimeList list of slimes
+    * @param sprite spritee
+     */
+    public void shoot(ArrayList&lt;Slime&gt; slimeList, PImage sprite) {
+<span class="nc" id="L124">        slimeList.add(new Slime(this.getX(), this.getY(), sprite, this.direction));</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+    * Check if gremlin has been shot, if so set respawn flag to true
+     */
+    public void checkOverlapAll(ArrayList&lt;Fireball&gt; fireballList) {
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (this.checkOverlap(fireballList)) {</span>
+<span class="nc" id="L132">            this.respawn = true;</span>
+        }
+<span class="fc" id="L134">    }</span>
+
+    /**
+    * Generic method to remove any blocked directions from a list.
+    * Take in a list of available directions to move in, then remove any blocked direction.
+    * @param wallList list of walls (stone/brick)
+    * @param directions list of available directions
+     */
+    private &lt;T extends GameObject&gt; void checkBlocked(
+        ArrayList&lt;T&gt; wallList, ArrayList&lt;String&gt; directions) {
+
+<span class="fc" id="L145">        int gremlinLeft = this.getX();</span>
+<span class="fc" id="L146">        int gremlinRight = this.getRight();</span>
+<span class="fc" id="L147">        int gremlinTop = this.getY();</span>
+<span class="fc" id="L148">        int gremlinBottom = this.getBottom();</span>
+
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        for (T wall: wallList) {</span>
+<span class="fc" id="L151">            int wallLeft = wall.getX();</span>
+<span class="fc" id="L152">            int wallRight = wall.getRight();</span>
+<span class="fc" id="L153">            int wallTop = wall.getY();</span>
+<span class="fc" id="L154">            int wallBottom = wall.getBottom();</span>
+
+<span class="fc bfc" id="L156" title="All 4 branches covered.">            boolean blockedTop = gremlinLeft == wallLeft &amp;&amp; gremlinTop - 1 == wallBottom;</span>
+<span class="fc bfc" id="L157" title="All 4 branches covered.">            boolean blockedBottom = gremlinLeft == wallLeft &amp;&amp; gremlinBottom + 1 == wallTop;</span>
+<span class="fc bfc" id="L158" title="All 4 branches covered.">            boolean blockedLeft = gremlinTop == wallTop &amp;&amp; gremlinLeft - 1 == wallRight;</span>
+<span class="fc bfc" id="L159" title="All 4 branches covered.">            boolean blockedRight = gremlinTop == wallTop &amp;&amp; gremlinRight + 1 == wallLeft;</span>
+
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            if (blockedTop) {</span>
+<span class="fc" id="L163">                directions.remove(&quot;up&quot;);</span>
+            }
+<span class="fc bfc" id="L165" title="All 2 branches covered.">            if (blockedBottom) {</span>
+<span class="fc" id="L166">                directions.remove(&quot;down&quot;);</span>
+            }
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            if (blockedLeft) {</span>
+<span class="fc" id="L169">                directions.remove(&quot;left&quot;);</span>
+            }
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            if (blockedRight) {</span>
+<span class="fc" id="L172">                directions.remove(&quot;right&quot;);</span>
+            }
+<span class="fc" id="L174">        }</span>
+<span class="fc" id="L175">    }</span>
+
+    /**
+    * Find a list of available directions to move in
+    * @param stonewallList list of stonewalls
+    * @param brickwallList list of brickwalls
+    * @param start flag that's true at the start and at respawning
+    * @return list of available directions */
+    public ArrayList&lt;String&gt; getDirections(
+        ArrayList&lt;Stonewall&gt; stonewallList, ArrayList&lt;Brickwall&gt; brickwallList,
+        String currentDirection, boolean start) {
+
+<span class="fc" id="L187">        ArrayList&lt;String&gt; availableDirections = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L188">        availableDirections.add(&quot;up&quot;);</span>
+<span class="fc" id="L189">        availableDirections.add(&quot;down&quot;);</span>
+<span class="fc" id="L190">        availableDirections.add(&quot;left&quot;);</span>
+<span class="fc" id="L191">        availableDirections.add(&quot;right&quot;);</span>
+        
+        // Remove any blocked directions
+<span class="fc" id="L194">        this.checkBlocked(stonewallList, availableDirections);</span>
+<span class="fc" id="L195">        this.checkBlocked(brickwallList, availableDirections);</span>
+
+        // Remove the previous direction if more than 1 direction and gremlin collides with wall.
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (!start) {</span>
+<span class="nc" id="L199">            String oppositeDirection = &quot;none&quot;;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (availableDirections.size() &gt; 1) {</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                if (currentDirection == &quot;up&quot;) {</span>
+<span class="nc" id="L202">                    oppositeDirection = &quot;down&quot;;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">                } else if (currentDirection == &quot;down&quot;) {</span>
+<span class="nc" id="L204">                    oppositeDirection = &quot;up&quot;;</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                } else if (currentDirection == &quot;left&quot;) {</span>
+<span class="nc" id="L206">                    oppositeDirection = &quot;right&quot;;</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                }else if (currentDirection == &quot;right&quot;) {</span>
+<span class="nc" id="L208">                    oppositeDirection = &quot;left&quot;;</span>
+                }
+<span class="nc" id="L210">                availableDirections.remove(oppositeDirection);</span>
+            }
+        }
+
+<span class="fc" id="L214">        return availableDirections;</span>
+    }
+
+    /**
+    * Respawn gremlins.
+    * If gremlin is shot, respawn on a free tile at a distance of at least 10 blocks away from
+    * the wizard.
+    * @param freeTileList list of free tiles
+    * @param wizardX wizard's x coordinate
+    * @param wizardY wizard's y coordinate
+     */
+    public void respawn(ArrayList&lt;FreeTile&gt; freeTileList, int wizardX, int wizardY) {
+        // Create list of free tiles at least 10 blocks away.
+<span class="nc" id="L227">        ArrayList&lt;FreeTile&gt; availableTiles = new ArrayList&lt;FreeTile&gt;();</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        for (FreeTile freeTile: freeTileList) {</span>
+<span class="nc" id="L229">            int xDistance = freeTile.getX() - wizardX;</span>
+<span class="nc" id="L230">            int yDistance = freeTile.getY() - wizardY;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (xDistance * xDistance + yDistance * yDistance &gt;= 220 * 220) {</span>
+<span class="nc" id="L232">                availableTiles.add(freeTile);</span>
+            }
+<span class="nc" id="L234">        }</span>
+
+        // Choose random tile to respawn in
+<span class="nc" id="L237">        Random randomizer = new Random();</span>
+<span class="nc" id="L238">        FreeTile spawnTile = availableTiles.get(randomizer.nextInt(availableTiles.size()));</span>
+<span class="nc" id="L239">        this.setX(spawnTile.getX());</span>
+<span class="nc" id="L240">        this.setY(spawnTile.getY());</span>
+
+        // Reset slime timer and find available directions again.
+<span class="nc" id="L243">        this.slimeTimer = 0;</span>
+<span class="nc" id="L244">        this.start = true;</span>
+<span class="nc" id="L245">        this.respawn = false;</span>
+<span class="nc" id="L246">    }</span>
+
+    /**
+    * Freeze gremlin adn start frozen timer.
+     */
+    public void freeze() {
+<span class="nc" id="L252">        this.frozenTimer = 0;</span>
+<span class="nc" id="L253">        this.frozen = true;</span>
+<span class="nc" id="L254">    }</span>
+
+    /**
+    * Unfreeze gremlin.
+     */
+    public void unfreeze() {
+<span class="nc" id="L260">        this.frozen = false;</span>
+<span class="nc" id="L261">    }</span>
+
+    /**
+    * Check if gremlin is frozen.
+    * @return is frozen or not
+     */
+    public boolean isFrozen() {
+<span class="fc" id="L268">        return this.frozen;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

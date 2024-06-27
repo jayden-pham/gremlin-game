@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Fireball.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Fireball.java</span></div><h1>Fireball.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PImage;
+import java.util.*;
+
+/**
+* Fireball class extending Projectile class. Fireballs travel in one direction and disappear
+* upon collisions.
+ */
+public class Fireball extends Projectile {
+    private boolean start;
+
+    /**
+    * Constructor for fireball.
+    * @param x x coordinate
+    * @param y y coordinate
+    * @param sprite image
+    * @param direction direction of wizard, fireball travels in the same direction
+     */
+    public Fireball (int x, int y, PImage sprite, String direction) {
+<span class="nc" id="L21">        super(x, y, sprite);</span>
+<span class="nc" id="L22">        this.direction = direction;</span>
+<span class="nc" id="L23">        this.start = true;</span>
+<span class="nc" id="L24">    }</span>
+
+    /**
+    * Handles the logic for fireball.
+    * Fireballs don't start moving until the second frame. This makes for a better looking
+    * animation
+     */
+    public void tick() {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (!this.start) {</span>
+<span class="nc" id="L33">            this.move();</span>
+        } else {
+<span class="nc" id="L35">            this.start = false;</span>
+        }
+<span class="nc" id="L37">    }</span>
+
+    /**
+    * Check for collisions with significant objects that cause fireballs to disappear.
+    * Loop through objects then check for collisions with any, then set destroyed variable
+    * accordingly.
+    * @param stonewallList list of stonewalls
+    * @param brickwallList list of brickwalls
+    * @param gremlinList list of gremlins
+    * @param slimeList list of slimes
+     */
+    public void checkOverlapAll(ArrayList&lt;Stonewall&gt; stonewallList,
+                                ArrayList&lt;Brickwall&gt; brickwallList,
+                                ArrayList&lt;Gremlin&gt; gremlinList,
+                                ArrayList&lt;Slime&gt; slimeList) {
+        
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (this.checkOverlap(stonewallList)</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            || this.checkOverlap(brickwallList)</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            || this.checkOverlap(gremlinList)</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            || this.checkOverlap(slimeList)) {</span>
+<span class="nc" id="L57">                this.destroyed = true;</span>
+<span class="nc" id="L58">                return;</span>
+            }
+<span class="nc" id="L60">        this.destroyed = false;</span>
+<span class="nc" id="L61">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

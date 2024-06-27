@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Creature.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Creature.java</span></div><h1>Creature.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PImage;
+import java.util.*;
+
+/**
+* Creature class extended from GameObject class and implemented the Moving interface,
+* a superclass for wizard and gremlin objects.
+* Aside from methods and variables introduced in GameObjects, introduces direction, velocity
+* and collision variables as well as a generic method for checking wall collision.
+*/
+public class Creature extends GameObject implements Moving {
+    protected String direction;
+    protected boolean collided;
+    protected int velocity;
+
+    /**
+    * Constructor for creature, requires coordinates and sprite. 
+    * Set collision to false
+    * @param x x coordinate
+    * @param y y coordinate
+    */
+    public Creature(int x, int y, PImage sprite) {
+<span class="fc" id="L24">        super(x, y, sprite);</span>
+<span class="fc" id="L25">        this.collided = false;</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+    * Move the creature.
+    * Done by taking the current direction and increment coordinates based on velocity
+     */
+    @Override
+    public void move() {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (this.direction == &quot;up&quot;) {</span>
+<span class="fc" id="L35">            this.setY(this.getY() - this.velocity);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        } else if (this.direction == &quot;down&quot;) {</span>
+<span class="fc" id="L37">            this.setY(this.getY() + this.velocity);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        } else if (this.direction == &quot;left&quot;) {</span>
+<span class="fc" id="L39">            this.setX(this.getX() - this.velocity);</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        } else if (this.direction == &quot;right&quot;) {</span>
+<span class="fc" id="L41">            this.setX(this.getX() + this.velocity);</span>
+        }
+<span class="fc" id="L43">    }</span>
+
+    /**
+    * Generic class for detecting wall collision.
+    * Loop through every walls to see if any is blocking the direction of movement.
+    * Has GameObject as upperbound for parameter, but is mainly used for Stonewall and Brickwall.
+    * @param list a generic list of objects (stone/brick)
+    * @param direction the creature's current direction
+    * @return whether the creature has collided with a wall or not
+     */
+    public &lt;T extends GameObject&gt; boolean checkCollisionWall(ArrayList&lt;T&gt; list, String direction) {
+<span class="fc" id="L54">        int thisLeft = this.getX();</span>
+<span class="fc" id="L55">        int thisRight = this.getRight();</span>
+<span class="fc" id="L56">        int thisTop = this.getY();</span>
+<span class="fc" id="L57">        int thisBottom = this.getBottom();</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (T wall: list) {</span>
+<span class="fc" id="L60">            int wallLeft = wall.getX();</span>
+<span class="fc" id="L61">            int wallRight = wall.getRight();</span>
+<span class="fc" id="L62">            int wallTop = wall.getY();</span>
+<span class="fc" id="L63">            int wallBottom = wall.getBottom();</span>
+
+            // Collision of 'this' in regards to wall
+<span class="pc bpc" id="L66" title="1 of 6 branches missed.">            boolean collisionTop = direction == &quot;down&quot;</span>
+                                    &amp;&amp; thisLeft == wallLeft 
+                                    &amp;&amp; thisBottom + 1 == wallTop;
+<span class="pc bpc" id="L69" title="1 of 6 branches missed.">            boolean collisionBottom = direction == &quot;up&quot;</span>
+                                        &amp;&amp; thisLeft == wallLeft
+                                        &amp;&amp; thisTop - 1 == wallBottom;
+<span class="pc bpc" id="L72" title="1 of 6 branches missed.">            boolean collisionLeft = direction == &quot;right&quot;</span>
+                                    &amp;&amp; thisTop == wallTop
+                                    &amp;&amp; thisRight + 1 == wallLeft;
+<span class="pc bpc" id="L75" title="1 of 6 branches missed.">            boolean collisionRight = direction == &quot;left&quot;</span>
+                                    &amp;&amp; thisTop == wallTop
+                                    &amp;&amp; thisLeft - 1 == wallRight;
+<span class="pc bpc" id="L78" title="4 of 8 branches missed.">            if (collisionTop || collisionBottom || collisionLeft || collisionRight) {</span>
+<span class="nc" id="L79">                return true;</span>
+            }
+<span class="fc" id="L81">        }</span>
+
+<span class="fc" id="L83">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

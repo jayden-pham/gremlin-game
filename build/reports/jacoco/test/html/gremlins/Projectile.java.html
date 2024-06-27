@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Projectile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Projectile.java</span></div><h1>Projectile.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PImage;
+import java.util.*;
+
+/**
+* Projectile class extending Game Object and implementing the Destructible and Moving interfaces.
+* Projectiles moves at a constant velocity and disappear upon collisions.
+ */
+public class Projectile extends GameObject implements Destructible, Moving {
+    protected String direction;
+    protected int velocity;
+    protected boolean destroyed;
+
+    /**
+    * Constructor for projectiles.
+    * All projectiles have a velocity of 4.
+     */
+    public Projectile(int x, int y, PImage sprite) {
+<span class="nc" id="L20">        super(x, y, sprite);</span>
+<span class="nc" id="L21">        this.destroyed = false;</span>
+<span class="nc" id="L22">        this.velocity = 4;</span>
+<span class="nc" id="L23">    }</span>
+
+    /**
+    * Move the projectile every frame by incrementing its coordinates.
+     */
+    @Override
+    public void move() {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (this.direction == &quot;up&quot;) {</span>
+<span class="nc" id="L31">            this.setY(this.getY() - this.velocity);</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        } else if (this.direction == &quot;down&quot;) {</span>
+<span class="nc" id="L33">            this.setY(this.getY() + this.velocity);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        } else if (this.direction == &quot;left&quot;) {</span>
+<span class="nc" id="L35">            this.setX(this.getX() - this.velocity);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        } else if (this.direction == &quot;right&quot;) {</span>
+<span class="nc" id="L37">            this.setX(this.getX() + this.velocity);</span>
+        }
+<span class="nc" id="L39">    }</span>
+
+    /**
+    * Check whether the projectile is destroyed or not.
+    * @return destroyed or not
+     */
+    @Override
+    public boolean isDestroyed() {
+<span class="nc" id="L47">        return this.destroyed;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="gremlins.AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-10-30T10:24:09" hostname="Jaydens-Air.modem" time="2.474">
+  <properties/>
+  <testcase name="startGame()" classname="gremlins.AppTest" time="2.474"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
