@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="gremlins.BrickwallTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-10-30T10:24:11" hostname="Jaydens-Air.modem" time="0.32">
+<testsuite name="gremlins.BrickwallTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-07-01T15:09:05" hostname="Jaydens-MacBook-Air-M2.local" time="0.234">
   <properties/>
-  <testcase name="constructor()" classname="gremlins.BrickwallTest" time="0.32"/>
+  <testcase name="constructor()" classname="gremlins.BrickwallTest" time="0.234"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
