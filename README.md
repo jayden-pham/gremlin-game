@@ -1,6 +1,6 @@
 # Gremlin
 
-Gremlinure is a fun and challenging 2D game where you play as a wizard navigating through various levels filled with brick walls, stone walls, and moving gremlins. Your goal is to reach the gate at the end of each level while avoiding gremlins and using fireballs to clear your path through destructible brick walls.
+Gremlin is a 2D game where you play as a wizard navigating through various levels filled with obstacles, entities and power ups. Your goal is to reach the gate at the end of each level while avoiding the green gremlins. Fireballs can be used to eliminate the gremlins and destroy brick walls.
 
 ## Table of Contents
 
@@ -10,20 +10,19 @@ Gremlinure is a fun and challenging 2D game where you play as a wizard navigatin
 - [Running the Game](#running-the-game)
 - [Building the Game](#building-the-game)
 - [Requirements](#requirements)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Gameplay
 
-In Gremlinure, you control a wizard who can move in four directions and shoot fireballs. The game environment consists of brick walls, stone walls, and gremlins:
+In Gremlin, you control a wizard who can move in four directions and shoot fireballs. The game environment consists of brick walls, stone walls, gremlins and snowballs:
 
 - **Brick Walls**: These can be destroyed by shooting fireballs at them.
 - **Stone Walls**: These are indestructible and cannot be destroyed by fireballs.
 - **Gremlins**: These enemies move around the level. If the wizard touches a gremlin, they lose a life and must restart the level.
+- **Snowballs**: These power ups randomly spawn throughout the level. If the wizard touches them, all gremlins will be frozen for a short amount of time.
 
 ### Objective
 
-Reach the gate at the end of each level to progress to the next one. Avoid gremlins and use your fireballs wisely to clear brick walls and create a path to the gate.
+Reach the gate at the end of each level to progress to the next one. Avoid gremlins and use your fireballs wisely to eliminate gremlins and destroy brickwalls.
 
 ## Controls
 
@@ -31,11 +30,12 @@ Reach the gate at the end of each level to progress to the next one. Avoid greml
 - **Spacebar**: Shoot a fireball in the direction the wizard is facing.
 
 ## Installation
+Java 8 and Gradle are required to run the game.
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/wizard-adventure.git
-    cd wizard-adventure
+    git clone https://github.com/jayden-pham/gremlin-game.git
+    cd gremlin-game
     ```
 
 2. **Ensure you have Java 8 installed**. You can download it from [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
@@ -46,39 +46,8 @@ Reach the gate at the end of each level to progress to the next one. Avoid greml
 
 To run the game, use the following command in your terminal:
 ```bash
+gradle build
 gradle run
 ```
-
-## Building the Game
-
-To build the game, use the following command in your terminal:
-```bash
-gradle build
-```
-
-This will compile the game and package it into a JAR file located in the `build/libs` directory.
-
-## Requirements
-
-- Java 8
-- Gradle
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any changes you would like to make.
-
-1. **Fork the repository**
-2. **Create a new branch** (`git checkout -b feature-branch`)
-3. **Commit your changes** (`git commit -am 'Add new feature'`)
-4. **Push to the branch** (`git push origin feature-branch`)
-5. **Create a new Pull Request**
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Enjoy playing Gremlinure and may your wizarding skills lead you to victory!
 
 ---
