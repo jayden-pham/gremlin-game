@@ -11,12 +11,13 @@ Gremlin is a 2D game where you play as a wizard navigating through various level
 
 ## Gameplay
 
-In Gremlin, you control a wizard who can move in four directions and shoot fireballs. The game environment consists of brick walls, stone walls, gremlins and snowballs:
+In Gremlin, you control a wizard who can move in four directions and shoot fireballs. The game environment consists of brick walls, stone walls, gremlins, snowballs and portals:
 
 - **Brick Walls**: These can be destroyed by shooting fireballs at them.
 - **Stone Walls**: These are indestructible and cannot be destroyed by fireballs.
 - **Gremlins**: These enemies move around the level. If the wizard touches a gremlin, they lose a life and must restart the level.
 - **Snowballs**: These power ups randomly spawn throughout the level. If the wizard touches them, all gremlins will be frozen for a short amount of time.
+- **Portals**: Portals may randomly spawn in pairs. Interacting with a portal will instantly teleports the player to the other end of the portal.
 
 ### Objective
 
@@ -41,7 +42,7 @@ Java 8 and Gradle are required to run the game.
 
 ## Running the Game
 
-To run the game, navigate to the ```bash gremlin-game``` directory and use the following command in your terminal:
+To run the game, navigate to the ```gremlin-game``` directory and use the following command in your terminal:
 ```bash
 gradle build
 gradle run
