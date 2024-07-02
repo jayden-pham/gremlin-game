@@ -8,8 +8,6 @@ Gremlin is a 2D game where you play as a wizard navigating through various level
 - [Controls](#controls)
 - [Installation](#installation)
 - [Running the Game](#running-the-game)
-- [Building the Game](#building-the-game)
-- [Requirements](#requirements)
 
 ## Gameplay
 
