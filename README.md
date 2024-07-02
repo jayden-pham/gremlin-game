@@ -33,7 +33,6 @@ Java 8 and Gradle are required to run the game.
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/jayden-pham/gremlin-game.git
-    cd gremlin-game
     ```
 
 2. **Ensure you have Java 8 installed**. You can download it from [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
@@ -42,7 +41,7 @@ Java 8 and Gradle are required to run the game.
 
 ## Running the Game
 
-To run the game, use the following command in your terminal:
+To run the game, navigate to the ```bash gremlin-game``` directory and use the following command in your terminal:
 ```bash
 gradle build
 gradle run
