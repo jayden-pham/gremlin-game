@@ -2,6 +2,8 @@
 
 Gremlin is a 2D game where you play as a wizard navigating through various levels filled with obstacles, entities and power ups. Your goal is to reach the gate at the end of each level while avoiding the green gremlins. Fireballs can be used to eliminate the gremlins and destroy brick walls.
 
+<img width="720" alt="Screenshot 2024-07-03 at 11 54 20 am" src="https://github.com/jayden-pham/gremlin-game/assets/101793495/6c89f8c0-ee37-4838-9f91-f59a1a2c780c">
+
 ## Table of Contents
 
 - [Gameplay](#gameplay)
